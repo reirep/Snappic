@@ -1,13 +1,15 @@
+mod color;
+
 extern crate raster;
-use raster::Color;
+use raster::{Image,Color};
 
 fn main() {
     let mut img = raster::open("in.jpg").unwrap();
-    invert(&mut img);
+    color::no_green(&mut img);
     raster::save(&img,"out.jpg").unwrap();
 }
 
-fn grey_mean(img: &mut raster::Image){
+fn grey_mean(img: &mut Image){
     for x in 0..img.height {
         for y in 0..img.width {
             let color = img.get_pixel(x,y).unwrap();
@@ -17,7 +19,7 @@ fn grey_mean(img: &mut raster::Image){
     }
 }
 
-fn sepia(img: &mut raster::Image){
+fn sepia(img: &mut Image){
     for x in 0..img.width {
         for y in 0..img.height {
             let color = img.get_pixel(x,y).unwrap();
@@ -40,7 +42,7 @@ fn sepia(img: &mut raster::Image){
     }
 }
 
-fn solarised_high(img: &mut raster::Image){
+fn solarised_high(img: &mut Image){
    let treshold = 125;
    for x in 0..img.width {
        for y in 0..img.height {
@@ -55,7 +57,7 @@ fn solarised_high(img: &mut raster::Image){
    }
 }
 
-fn solarised_low(img : &mut raster::Image){
+fn solarised_low(img : &mut Image){
    let treshold = 125;
    for x in 0..img.width {
        for y in 0..img.height {
@@ -70,7 +72,7 @@ fn solarised_low(img : &mut raster::Image){
    }
 }
 
-fn invert(img : &mut raster::Image){
+fn invert(img : &mut Image){
     for x in 0..img.width {
         for y in 0..img.height {
             let color = img.get_pixel(x,y).unwrap();
