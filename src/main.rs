@@ -1,11 +1,12 @@
 mod color;
+mod reduction;
 
 extern crate raster;
 use raster::{Image,Color};
 
 fn main() {
     let mut img = raster::open("in.jpg").unwrap();
-    color::no_green(&mut img);
+    color::brightness_sub(&mut img,25);
     raster::save(&img,"out.jpg").unwrap();
 }
 
