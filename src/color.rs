@@ -1,5 +1,5 @@
 use raster::{Image,Color};
-
+use utils::{add,sub};
 //set brightness
 
 pub fn brightness_add(img : &mut Image, change : u8){
@@ -25,22 +25,6 @@ pub fn brightness_sub(img : &mut Image, change : u8){
                     sub(color.b,change)
                 )).unwrap();
         }
-    }
-}
-
-fn add(base : u8, change : u8) -> u8
-{
-    match base.checked_add(change) {
-        Some(x) => x,
-        None => 255
-    }
-}
-
-fn sub(base : u8, change : u8) -> u8
-{
-    match base.checked_sub(change) {
-        Some(x) => x,
-        None => 0
     }
 }
 

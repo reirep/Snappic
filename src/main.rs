@@ -1,5 +1,6 @@
 mod color;
 mod reduction;
+mod utils;
 
 extern crate raster;
 use raster::{Image,Color};
