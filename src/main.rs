@@ -3,11 +3,11 @@ use raster::Color;
 
 fn main() {
     let mut img = raster::open("in.jpg").unwrap();
-    set_solarised_low(&mut img);
+    invert(&mut img);
     raster::save(&img,"out.jpg").unwrap();
 }
 
-fn set_grey_mean(img: &mut raster::Image){
+fn grey_mean(img: &mut raster::Image){
     for x in 0..img.height {
         for y in 0..img.width {
             let color = img.get_pixel(x,y).unwrap();
@@ -17,9 +17,9 @@ fn set_grey_mean(img: &mut raster::Image){
     }
 }
 
-fn set_sepia(img: &mut raster::Image){
-    for x in 0..img.height {
-        for y in 0..img.width {
+fn sepia(img: &mut raster::Image){
+    for x in 0..img.width {
+        for y in 0..img.height {
             let color = img.get_pixel(x,y).unwrap();
 
             let r = color.r as f32;
@@ -40,10 +40,10 @@ fn set_sepia(img: &mut raster::Image){
     }
 }
 
-fn set_solarised_high(img: &mut raster::Image){
+fn solarised_high(img: &mut raster::Image){
    let treshold = 125;
-   for x in 0..img.height {
-       for y in 0..img.width {
+   for x in 0..img.width {
+       for y in 0..img.height {
         let color = img.get_pixel(x,y).unwrap();
 
         img.set_pixel(x,y,Color::rgb(
@@ -55,10 +55,10 @@ fn set_solarised_high(img: &mut raster::Image){
    }
 }
 
-fn set_solarised_low(img : &mut raster::Image){
+fn solarised_low(img : &mut raster::Image){
    let treshold = 125;
-   for x in 0..img.height {
-       for y in 0..img.width {
+   for x in 0..img.width {
+       for y in 0..img.height {
         let color = img.get_pixel(x,y).unwrap();
 
         img.set_pixel(x,y,Color::rgb(
@@ -68,4 +68,17 @@ fn set_solarised_low(img : &mut raster::Image){
                 )).unwrap();
        }
    }
+}
+
+fn invert(img : &mut raster::Image){
+    for x in 0..img.width {
+        for y in 0..img.height {
+            let color = img.get_pixel(x,y).unwrap();
+            img.set_pixel(x,y,Color::rgb(
+                    255-color.r,
+                    255-color.g,
+                    255-color.b
+                )).unwrap();
+        }
+    }
 }
