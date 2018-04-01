@@ -27,6 +27,7 @@ pub fn limit(nbr : f32) -> u8
 //les dimensions de kernel doivent être impaires
 pub fn convolution(img: &mut Image, mult: f64, kernel : &Vec<Vec<f64>>)
 {
+    let mut dest = Image::blank(img.width,img.height);
     for y in 0..img.height {
         for x in 0..img.width {
             let mut r : f64 = 0.0;
@@ -34,26 +35,26 @@ pub fn convolution(img: &mut Image, mult: f64, kernel : &Vec<Vec<f64>>)
             let mut b : f64 = 0.0;
 
             for kx in 0..kernel.len() {
-                for ky in 0..kernel[kx as usize].len()  {
-                    let ax : i32 = x - (kernel.len()/2 + kx) as i32;
-                    let ay : i32 = y - (kernel[ax as usize].len()/2 + ky) as i32;
+                for ky in 0..kernel[0].len()  {
+                    let ax : i32 = x + kx as i32 - (kernel.len()/2) as i32;
+                    let ay : i32 = y + ky as i32 - (kernel[0].len()/2) as i32;
                     
                     let color = get_px(img, ax, ay);
-
+                    
                     r += color.r as f64 * kernel[kx][ky];
                     g += color.g as f64 * kernel[kx][ky];
                     b += color.b as f64 * kernel[kx][ky];
-
                 }
             }  
-
+             
             r*=mult;
             g*=mult;
             b*=mult;
 
-            img.set_pixel(x,y,Color::rgb(r as u8, g as u8, b as u8)).unwrap();
+            dest.set_pixel(x,y,Color::rgb(r as u8, g as u8, b as u8)).unwrap();
         }
     }
+    *img = dest;
 }
 
 //we use the mirror technique to get the pixel out of the picture for the convolution
@@ -68,7 +69,7 @@ fn get_px(img: &Image, x : i32, y : i32) -> Color
 fn inside_range(max : i32, value : i32) -> i32
 {
     let mut result = value;
-    if result > max {
+    if result >= max {
         result *= -1;
     } 
     while result < 0 {
