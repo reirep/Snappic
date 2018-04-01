@@ -1,29 +1,18 @@
 use raster::{Image,Color};
 use utils::{add,sub,limit};
 
-//set brightness
+//change the brightness
+pub fn brightness(img : &mut Image, change : i16){
+    let fct = if change.signum() < 0 {sub} else {add};
+    let mul = if change.signum() < 0 { -1} else {  1};
 
-pub fn brightness_add(img : &mut Image, change : u8){
     for y in 0..img.height {
         for x in 0..img.width {
             let color = img.get_pixel(x,y).unwrap();
             img.set_pixel(x,y,Color::rgb(
-                    add(color.r,change),
-                    add(color.g,change),
-                    add(color.b,change)
-                )).unwrap();
-        }
-    }
-}
-
-pub fn brightness_sub(img : &mut Image, change : u8){
-    for y in 0..img.height {
-        for x in 0..img.width {
-            let color = img.get_pixel(x,y).unwrap();
-            img.set_pixel(x,y,Color::rgb(
-                    sub(color.r,change),
-                    sub(color.g,change),
-                    sub(color.b,change)
+                    fct(color.r,(change * mul) as u8),
+                    fct(color.g,(change * mul) as u8),
+                    fct(color.b,(change * mul) as u8)
                 )).unwrap();
         }
     }

@@ -8,13 +8,10 @@ mod utils;
 mod mirror;
 
 extern crate raster;
-use raster::{Image,Color};
 
 fn main() {
     let mut img = raster::open("in.jpg").unwrap();
-    for _x in 0..10000 {
-        color::full_blue(&mut img)
-    }
+    color::brightness(&mut img, -25);
     raster::save(&img,"out.jpg").unwrap();
 }
 
