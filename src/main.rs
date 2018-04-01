@@ -11,7 +11,7 @@ use raster::{Image,Color};
 
 fn main() {
     let mut img = raster::open("in.jpg").unwrap();
-    color::contrast(&mut img, 1.1);
+    color::gamma(&mut img, 1.5);
     raster::save(&img,"out.jpg").unwrap();
 }
 
