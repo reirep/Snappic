@@ -1,5 +1,6 @@
 use raster::{Image,Color};
 use utils::{add,sub};
+
 //set brightness
 
 pub fn brightness_add(img : &mut Image, change : u8){
@@ -26,6 +27,30 @@ pub fn brightness_sub(img : &mut Image, change : u8){
                 )).unwrap();
         }
     }
+}
+
+//change the contrast
+//TODO : cette merde marche paaaaas
+pub fn contrast(img : &mut Image, change : f32){
+    for x in 0..img.width {
+        for y in 0..img.height {
+            let color = img.get_pixel(x,y).unwrap();
+            img.set_pixel(x,y,Color::rgb(
+                    px_contrast(color.r,change),
+                    px_contrast(color.g,change),
+                    px_contrast(color.b,change)
+                )).unwrap();
+        }
+    } 
+}
+
+fn px_contrast(px: u8, val : f32) -> u8
+{
+    let decal = 127.5;
+    let result =((px as f32 - decal) * val + decal).round();  
+    if result < 0.0 {0}
+    else if result > 255.0 {255}
+    else {result as u8}
 }
 
 //saturate a color canal

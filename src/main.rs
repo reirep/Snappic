@@ -1,3 +1,7 @@
+//je sais que c'est mal mais quand tu développe des filtres tu ne sais pas tous les appliquer à
+//chaque fois
+#![allow(dead_code)]
+
 mod color;
 mod reduction;
 mod utils;
@@ -7,7 +11,7 @@ use raster::{Image,Color};
 
 fn main() {
     let mut img = raster::open("in.jpg").unwrap();
-    color::brightness_sub(&mut img,25);
+    color::contrast(&mut img, 1.1);
     raster::save(&img,"out.jpg").unwrap();
 }
 
