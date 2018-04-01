@@ -6,8 +6,8 @@ static REF_GREEN : [u8;8] = [  0,  0,255,255,  0,  0,255,255];
 static REF_BLUE  : [u8;8] = [  0,  0,  0,  0,255,255,255,255];
 
 pub fn to_tree_bits(img : &mut Image){
-    for x in 0..img.width {
-        for y in 0..img.height {
+    for y in 0..img.height {
+        for x in 0..img.width {
             let color = img.get_pixel(x,y).unwrap();
             let (r,g,b) = get_closest(color.r, color.g, color.b);
             img.set_pixel(x,y,Color::rgb(r,g,b)).unwrap();

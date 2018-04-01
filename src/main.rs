@@ -5,19 +5,22 @@
 mod color;
 mod reduction;
 mod utils;
+mod mirror;
 
 extern crate raster;
 use raster::{Image,Color};
 
 fn main() {
     let mut img = raster::open("in.jpg").unwrap();
-    color::gamma(&mut img, 1.5);
+    for _x in 0..10000 {
+        color::full_blue(&mut img)
+    }
     raster::save(&img,"out.jpg").unwrap();
 }
 
 fn grey_mean(img: &mut Image){
-    for x in 0..img.height {
-        for y in 0..img.width {
+    for y in 0..img.height {
+        for x in 0..img.width {
             let color = img.get_pixel(x,y).unwrap();
             let avg : u8 =  color.r/3 + color.g/3 + color.b/3;
             img.set_pixel(x,y, Color::rgb(avg, avg, avg)).unwrap();
@@ -26,8 +29,8 @@ fn grey_mean(img: &mut Image){
 }
 
 fn sepia(img: &mut Image){
-    for x in 0..img.width {
-        for y in 0..img.height {
+    for y in 0..img.height {
+        for x in 0..img.width {
             let color = img.get_pixel(x,y).unwrap();
 
             let r = color.r as f32;
@@ -50,8 +53,8 @@ fn sepia(img: &mut Image){
 
 fn solarised_high(img: &mut Image){
    let treshold = 125;
-   for x in 0..img.width {
-       for y in 0..img.height {
+    for y in 0..img.height {
+        for x in 0..img.width {
         let color = img.get_pixel(x,y).unwrap();
 
         img.set_pixel(x,y,Color::rgb(
@@ -65,8 +68,8 @@ fn solarised_high(img: &mut Image){
 
 fn solarised_low(img : &mut Image){
    let treshold = 125;
-   for x in 0..img.width {
-       for y in 0..img.height {
+    for y in 0..img.height {
+        for x in 0..img.width {
         let color = img.get_pixel(x,y).unwrap();
 
         img.set_pixel(x,y,Color::rgb(
@@ -79,8 +82,8 @@ fn solarised_low(img : &mut Image){
 }
 
 fn invert(img : &mut Image){
-    for x in 0..img.width {
-        for y in 0..img.height {
+    for y in 0..img.height {
+        for x in 0..img.width {
             let color = img.get_pixel(x,y).unwrap();
             img.set_pixel(x,y,Color::rgb(
                     255-color.r,
